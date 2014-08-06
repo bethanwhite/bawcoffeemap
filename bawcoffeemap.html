@@ -50,6 +50,8 @@
         }
         var mapElement = document.getElementById('bawcoffeemap');
         var map = new google.maps.Map(mapElement, mapOptions);
+        var icon1 = 'https://dl.dropboxusercontent.com/u/72159755/bawcoffeemap/images/bean_marker_largebean_widestripe_med.png';
+        var icon2 = 'https://dl.dropboxusercontent.com/u/72159755/bawcoffeemap/images/bean_marker_largebean_widestripe_invertedcols_med.png';
         var locations = [
 ['Quarter Horse Coffee', 'Quarter Horse Coffee: excellent coffee on Cowley Road. Free wifi. Can be super crowded (hard to find seats) but is crowded for a reason - some of the best coffee in Oxford, and definitely the best brownies in town!', 'undefined', 'undefined', 'http://quarterhorsecoffee.com/', 51.7488331, -1.2407158]
         ];
@@ -59,7 +61,7 @@
 			if (locations[i][3] =='undefined'){ email ='';} else { email = locations[i][3];}
 			if (locations[i][4] =='undefined'){ web ='';} else { web = locations[i][4];}
             marker = new google.maps.Marker({
-                icon: '/assets/img/markers/solid-pin-blue.png',
+                icon: icon1,
                 position: new google.maps.LatLng(locations[i][5], locations[i][6]),
                 map: map,
                 title: locations[i][0],
@@ -81,13 +83,22 @@ link = web;
             iw = new google.maps.InfoWindow({content:html});
             iw.open(map,marker);
         });
+
+      google.maps.event.addListener(marker, 'mouseover', function() {
+	    marker.setIcon(icon2);
+	});
+    	    
+      google.maps.event.addListener(marker, 'mouseout', function() {
+            marker.setIcon(icon1);
+        });	    
+	    
     }
 }
 </script>
 <style>
     #bawcoffeemap {
-        height:400px;
-        width:550px;
+        height:800px;
+        width:1100px;
     }
     .gm-style-iw * {
         display: block;
