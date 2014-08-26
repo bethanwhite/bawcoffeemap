@@ -54,7 +54,9 @@ src='https://maps.googleapis.com/maps/api/js?key=AIzaSyBC9wwXIJcHqo8LnAHkSSVGFk4
         var mapElement = document.getElementById('bawcoffeemap');
         var map = new google.maps.Map(mapElement, mapOptions);
         var icon1 = 'https://dl.dropboxusercontent.com/u/72159755/bawcoffeemap/images/bean_marker_largebean_widestripe_med.png';
-        var icon2 = 'https://dl.dropboxusercontent.com/u/72159755/bawcoffeemap/images/bean_marker_largebean_widestripe_invertedcols_med.png';
+        var icon2 =
+    'https://dl.dropboxusercontent.com/u/72159755/bawcoffeemap/images/bean_marker_largebean_widestripe_invertedcols_med.png';
+        var infowindow = new google.maps.InfoWindow(); 
 
         downloadUrl("coffee_locations.xml", function(data) {
         // data processing code
@@ -77,6 +79,11 @@ src='https://maps.googleapis.com/maps/api/js?key=AIzaSyBC9wwXIJcHqo8LnAHkSSVGFk4
         if (email =="undefined"){ email ="";} else { email = email;}
         if (tel =="undefined"){ tel ="";} else { tel = tel;}
 
+        if (web.substring(0, 7) != "http://") {
+        web = "http://" + web;
+        } else {
+        web = web;
+        }
 
         //create a marker for each record
         marker = new google.maps.Marker({
@@ -89,23 +96,19 @@ src='https://maps.googleapis.com/maps/api/js?key=AIzaSyBC9wwXIJcHqo8LnAHkSSVGFk4
         email: email,
         web: web
         });
+        
         bindInfoWindow(marker, map, name, desc, tel, email, web);
-
 
         }
         }
         );
 
 function bindInfoWindow(marker, map, title, desc, tel, email, web) {
-if (web.substring(0, 7) != "http://") {
-link = "http://" + web;
-} else {
-link = web;
-}
       google.maps.event.addListener(marker, 'click', function() {
-            var html= "<div style='color:#000;background-color:#fff;padding:5px;width:150px;'><h4>"+title+"</h4><p>"+desc+"<p><a href='"+link+"'' >"+web+"<a></div>";
-            iw = new google.maps.InfoWindow({content:html});
-            iw.open(map,marker);
+            infowindow.close() // close any open infowindow
+            var html= "<div style='color:#000;background-color:#fff;padding:5px;width:150px;'><h4>"+title+"</h4><p>"+desc+"<p><a href='"+web+"'' >"+web+"<a></div>";
+            infowindow.setContent(html);
+	    infowindow.open(map, marker);
         });
 
       google.maps.event.addListener(marker, 'mouseover', function() {
@@ -116,7 +119,7 @@ link = web;
             marker.setIcon(icon1);
         });	    
 	    
-    }
+    }	    
 
 
 }
